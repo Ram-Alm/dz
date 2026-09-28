@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 	"slices"
 	"strconv"
 	"strings"
@@ -15,8 +17,8 @@ func main() {
 	fmt.Println(result)
 }
 
-func calculate(opearatin string, numbers []int) int {
-	var result int
+func calculate(opearatin string, numbers []float64) float64 {
+	var result float64
 	switch opearatin {
 	case "SUM":
 		for _, value := range numbers {
@@ -27,7 +29,7 @@ func calculate(opearatin string, numbers []int) int {
 		for _, value := range numbers {
 			result += value
 		}
-		return result / len(numbers)
+		return result / float64(len(numbers))
 	case "MED":
 		slices.Sort(numbers)
 		if len(numbers)%2 != 0 {
@@ -42,8 +44,8 @@ func calculate(opearatin string, numbers []int) int {
 func getOperation() string {
 	var operation string
 
-	fmt.Print("Введите тип операции (AVG, SUM, MED): ")
 	for {
+		fmt.Print("Введите тип операции (AVG, SUM, MED): ")
 		fmt.Scan(&operation)
 		if operation == "AVG" || operation == "SUM" || operation == "MED" {
 			return operation
@@ -51,16 +53,19 @@ func getOperation() string {
 	}
 }
 
-func getNumbers() []int {
+func getNumbers() []float64 {
 	var inputNumbers string
-	nums := make([]int, 0)
+	nums := make([]float64, 0)
 	fmt.Print("Введите числа через запятую (пример 1, 2, 3): ")
-	fmt.Scan(&inputNumbers)
+	inputNumbers, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	numbers := strings.Split(strings.TrimSpace(inputNumbers), ",")
+	numbers := strings.Split(inputNumbers, ",")
 
 	for _, value := range numbers {
-		num, err := strconv.Atoi(value)
+		num, err := strconv.ParseFloat(strings.TrimSpace(value), 64)
 		if err != nil {
 			log.Fatal(err)
 		}
