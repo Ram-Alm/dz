@@ -5,11 +5,11 @@ import (
 	"strings"
 )
 
-// Константы для курсов валют (базовая валюта - USD)
-const (
-	usdToEur = 0.86
-	usdToRub = 86.3
-)
+var exchangeRates = map[string]float64{
+	"USD": 1.0,
+	"EUR": 0.86,
+	"RUB": 86.3,
+}
 
 func main() {
 	fmt.Println("=== Добро пожаловать в Калькулятор Валют ===")
@@ -66,29 +66,10 @@ func getAmount() float64 {
 // Функция расчета и вывода итога
 func calculate(amount float64, from, to string) {
 	// Сначала переводим любую исходную валюту в промежуточный USD
-	var amountInUSD float64
-
-	switch from {
-	case "USD":
-		amountInUSD = amount
-	case "EUR":
-		amountInUSD = amount / usdToEur
-	case "RUB":
-		amountInUSD = amount / usdToRub
-	}
+	amountInUSD := amount / exchangeRates[from]
 
 	// Затем переводим из USD в целевую валюту
-	var result float64
-
-	switch to {
-	case "USD":
-		result = amountInUSD
-	case "EUR":
-		result = amountInUSD * usdToEur
-	case "RUB":
-		result = amountInUSD * usdToRub
-	}
+	result := amountInUSD * exchangeRates[to]
 
 	fmt.Printf("\nРезультат: %.2f %s = %.2f %s\n", amount, from, result, to)
 }
-
