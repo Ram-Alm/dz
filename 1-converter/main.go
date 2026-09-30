@@ -36,8 +36,12 @@ func checkCurrency(currency string) bool {
 // Функция ввода и проверки валюты
 func getCurrency(prompt string) string {
 	var currency string
+	availableCurrency := []string{}
+	for key, _ := range exchangeRates {
+		availableCurrency = append(availableCurrency, key)
+	}
 	for {
-		fmt.Printf("%s (доступны: USD, EUR, RUB): ", prompt)
+		fmt.Printf("%s (доступны: %v): ", prompt, availableCurrency)
 		_, err := fmt.Scanln(&currency)
 
 		// Переводим в верхний регистр, чтобы ввод "usd" или "Usd" тоже работал
