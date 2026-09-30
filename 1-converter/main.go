@@ -27,6 +27,12 @@ func main() {
 	calculate(amount, currency1, currency2)
 }
 
+// Функция для проверки наличия валюты в мапе
+func checkCurrency(currency string) bool {
+	_, ok := exchangeRates[currency]
+	return ok
+}
+
 // Функция ввода и проверки валюты
 func getCurrency(prompt string) string {
 	var currency string
@@ -37,7 +43,7 @@ func getCurrency(prompt string) string {
 		// Переводим в верхний регистр, чтобы ввод "usd" или "Usd" тоже работал
 		currency = strings.ToUpper(strings.TrimSpace(currency))
 
-		if err != nil || (currency != "USD" && currency != "EUR" && currency != "RUB") {
+		if err != nil || !checkCurrency(currency) {
 			fmt.Println("Ошибка: некорректная валюта. Пожалуйста, выберите из списка.")
 			continue
 		}
