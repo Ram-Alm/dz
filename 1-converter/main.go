@@ -5,39 +5,39 @@ import (
 	"strings"
 )
 
-var exchangeRates = map[string]float64{
-	"USD": 1.0,
-	"EUR": 0.86,
-	"RUB": 86.3,
-}
-
 func main() {
+	var exchangeRates = map[string]float64{
+		"USD": 1.0,
+		"EUR": 0.86,
+		"RUB": 86.3,
+	}
+
 	fmt.Println("=== Добро пожаловать в Калькулятор Валют ===")
 
 	// 1. Шаг: Ввод исходной валюты
-	currency1 := getCurrency("Введите исходную валюту")
+	currency1 := getCurrency(&exchangeRates, "Введите исходную валюту")
 
 	// 2. Шаг: Ввод суммы
 	amount := getAmount()
 
 	// 3. Шаг: Ввод целевой валюты
-	currency2 := getCurrency("Введите целевую валюту")
+	currency2 := getCurrency(&exchangeRates, "Введите целевую валюту")
 
 	// 4. Шаг: Расчет и вывод результата
-	calculate(amount, currency1, currency2)
+	calculate(&exchangeRates, amount, currency1, currency2)
 }
 
 // Функция для проверки наличия валюты в мапе
-func checkCurrency(currency string) bool {
-	_, ok := exchangeRates[currency]
+func checkCurrency(rates *map[string]float64, currency string) bool {
+	_, ok := (*rates)[currency]
 	return ok
 }
 
 // Функция ввода и проверки валюты
-func getCurrency(prompt string) string {
+func getCurrency(rates *map[string]float64, prompt string) string {
 	var currency string
 	availableCurrency := []string{}
-	for key, _ := range exchangeRates {
+	for key, _ := range *rates {
 		availableCurrency = append(availableCurrency, key)
 	}
 	for {
@@ -47,7 +47,7 @@ func getCurrency(prompt string) string {
 		// Переводим в верхний регистр, чтобы ввод "usd" или "Usd" тоже работал
 		currency = strings.ToUpper(strings.TrimSpace(currency))
 
-		if err != nil || !checkCurrency(currency) {
+		if err != nil || !checkCurrency(rates, currency) {
 			fmt.Println("Ошибка: некорректная валюта. Пожалуйста, выберите из списка.")
 			continue
 		}
@@ -74,12 +74,12 @@ func getAmount() float64 {
 }
 
 // Функция расчета и вывода итога
-func calculate(amount float64, from, to string) {
+func calculate(rates *map[string]float64, amount float64, from, to string) {
 	// Сначала переводим любую исходную валюту в промежуточный USD
-	amountInUSD := amount / exchangeRates[from]
+	amountInUSD := amount / (*rates)[from]
 
 	// Затем переводим из USD в целевую валюту
-	result := amountInUSD * exchangeRates[to]
+	result := amountInUSD * (*rates)[to]
 
 	fmt.Printf("\nРезультат: %.2f %s = %.2f %s\n", amount, from, result, to)
 }
