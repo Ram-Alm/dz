@@ -18,10 +18,10 @@ func newBin(id string, private bool, name string) *Bin {
 	}
 }
 
-var BinList []Bin
+type BinList []Bin
 
-func addBin(item Bin) {
-	BinList = append(BinList, item)
+func newBinList() BinList {
+	return BinList{}
 }
 
 func main() {
