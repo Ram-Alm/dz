@@ -9,10 +9,6 @@ type Bin struct {
 	name      string
 }
 
-type BinList struct {
-	Bin
-}
-
 func newBin(id string, private bool, name string) *Bin {
 	return &Bin{
 		id:        id,
@@ -20,6 +16,12 @@ func newBin(id string, private bool, name string) *Bin {
 		createdAt: time.Now(),
 		name:      name,
 	}
+}
+
+var BinList []Bin
+
+func addBin(item Bin) {
+	BinList = append(BinList, item)
 }
 
 func main() {

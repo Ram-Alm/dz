@@ -37,7 +37,7 @@ func checkCurrency(rates *map[string]float64, currency string) bool {
 func getCurrency(rates *map[string]float64, prompt string) string {
 	var currency string
 	availableCurrency := []string{}
-	for key, _ := range *rates {
+	for key := range *rates {
 		availableCurrency = append(availableCurrency, key)
 	}
 	for {
