@@ -2,7 +2,6 @@ package file
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,17 +10,12 @@ import (
 func ReadFile(name string) ([]byte, error) {
 	data, err := os.ReadFile(name)
 	if err != nil {
-		fmt.Println("Не удалось прочитать файл. Ошибка:", err)
-	}
-
-	isJson := checkFile(name)
-	if !isJson {
-		return nil, errors.New("Файл не json!")
+		return nil, errors.New("Не удалось прочитать файл.")
 	}
 	return data, nil
 }
 
-func checkFile(name string) bool {
+func CheckFile(name string) bool {
 	ext := filepath.Ext(name)
 	if strings.EqualFold(ext, ".json") {
 		return true
