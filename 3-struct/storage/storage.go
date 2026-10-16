@@ -2,12 +2,13 @@ package storage
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"struct-dz/bins"
 )
 
-func saveBin(bins bins.BinList) {
+func SaveBin(bins bins.BinList) {
 	content, err := json.Marshal(bins)
 	if err != nil {
 		fmt.Println("Не удалось преобразовать данные в JSON.", err)
@@ -29,14 +30,14 @@ func saveBin(bins bins.BinList) {
 	fmt.Println("Данные bin сохранены в файл bins.json")
 }
 
-func readBin(bins bins.BinList) {
+func ReadBin(bin *bins.BinList) (bins.BinList, error) {
 	data, err := os.ReadFile("bins.json")
 	if err != nil {
-		fmt.Println("Не удалось прочитать файл.", err)
+		return nil, errors.New("Не удалось прочитать файл.")
 	}
-	err = json.Unmarshal(data, bins)
+	err = json.Unmarshal(data, &bin)
 	if err != nil {
-		fmt.Println("Не удалось преобразовать JSON данные в слайс структур.", err)
+		return nil, errors.New("Не удалось преобразовать JSON данные в слайс структур.")
 	}
-	fmt.Println(bins)
+	return *bin, nil
 }
