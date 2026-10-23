@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"struct-dz/bins"
 	"struct-dz/file"
 )
