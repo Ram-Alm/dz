@@ -28,10 +28,13 @@ func (db *JsonDb) Read() ([]byte, error) {
 func (db *JsonDb) Write(b []byte) error {
 	file, err := os.Create(db.fileName)
 	if err != nil {
-		return err
+		return errors.New("Не удалось создать файл.")
 	}
 	_, err = file.WriteString(string(b))
-	return err
+	if err != nil {
+		return errors.New("Не удалось записать данные в файл.")
+	}
+	return nil
 }
 
 func CheckFile(name string) bool {
