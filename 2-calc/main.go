@@ -51,11 +51,15 @@ func med(numbers []float64) float64 {
 
 func getOperation() string {
 	var operation string
-
+	var operationsType []string
+	for key := range operations {
+		operationsType = append(operationsType, key)
+	}
 	for {
-		fmt.Print("Введите тип операции (AVG, SUM, MED): ")
+		fmt.Printf("Введите тип операции %v: ", operationsType)
 		fmt.Scan(&operation)
-		if operation == "AVG" || operation == "SUM" || operation == "MED" {
+
+		if _, ok := operations[operation]; ok {
 			return operation
 		}
 	}
