@@ -10,33 +10,41 @@ import (
 	"strings"
 )
 
+var operations = map[string]func([]float64) float64{
+	"SUM": sum,
+	"AVG": avg,
+	"MED": med,
+}
+
 func main() {
 	operation := getOperation()
 	numbers := getNumbers()
-	result := calculate(operation, numbers)
+	result := operations[operation](numbers)
 	fmt.Println(result)
 }
 
-func calculate(opearatin string, numbers []float64) float64 {
+func sum(numbers []float64) float64 {
 	var result float64
-	switch opearatin {
-	case "SUM":
-		for _, value := range numbers {
-			result += value
-		}
-		return result
-	case "AVG":
-		for _, value := range numbers {
-			result += value
-		}
-		return result / float64(len(numbers))
-	case "MED":
-		slices.Sort(numbers)
-		if len(numbers)%2 != 0 {
-			return numbers[len(numbers)/2]
-		} else if len(numbers)%2 == 0 {
-			return (numbers[len(numbers)/2-1] + numbers[len(numbers)/2]) / 2
-		}
+	for _, value := range numbers {
+		result += value
+	}
+	return result
+}
+
+func avg(numbers []float64) float64 {
+	var result float64
+	for _, value := range numbers {
+		result += value
+	}
+	return result / float64(len(numbers))
+}
+
+func med(numbers []float64) float64 {
+	slices.Sort(numbers)
+	if len(numbers)%2 != 0 {
+		return numbers[len(numbers)/2]
+	} else if len(numbers)%2 == 0 {
+		return (numbers[len(numbers)/2-1] + numbers[len(numbers)/2]) / 2
 	}
 	return 0
 }
