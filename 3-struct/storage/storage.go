@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"struct-dz/bins"
-	"struct-dz/file"
 )
 
 type Db interface {
@@ -31,17 +30,13 @@ func (s *Storage) SaveBin(bins bins.BinList) error {
 
 	err = s.db.Write(content)
 	if err != nil {
-		return fmt.Errorf("Не удалось создать файл. %w", err)
+		return err
 	}
 	return nil
 }
 
-func (s *Storage) ReadBin(name string) (bins.BinList, error) {
+func (s *Storage) ReadBin() (bins.BinList, error) {
 	var bin bins.BinList
-	isJson := file.CheckFile(name)
-	if !isJson {
-		return nil, errors.New("Файл не является JSON")
-	}
 	data, err := s.db.Read()
 	if err != nil {
 		return nil, err

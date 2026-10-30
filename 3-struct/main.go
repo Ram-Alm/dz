@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	loadedBin, err := st1.ReadBin("bins.json")
+	loadedBin, err := st1.ReadBin()
 	if err != nil {
 		fmt.Println(err)
 		return

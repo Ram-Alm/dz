@@ -18,6 +18,9 @@ func NewJsonDb(name string) *JsonDb {
 }
 
 func (db *JsonDb) Read() ([]byte, error) {
+	if !CheckFile(db.fileName) {
+		return nil, errors.New("Файл не является json.")
+	}
 	data, err := os.ReadFile(db.fileName)
 	if err != nil {
 		return nil, errors.New("Не удалось прочитать файл.")
@@ -30,6 +33,7 @@ func (db *JsonDb) Write(b []byte) error {
 	if err != nil {
 		return errors.New("Не удалось создать файл.")
 	}
+	defer file.Close()
 	_, err = file.WriteString(string(b))
 	if err != nil {
 		return errors.New("Не удалось записать данные в файл.")
